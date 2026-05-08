@@ -31,7 +31,7 @@
                     <div class="hidden lg:flex items-center space-x-10">
                         <a href="/" class="text-xs font-bold uppercase tracking-widest hover:text-indigo-600 transition">Home</a>
                         <a href="{{ route('properties.index') }}" class="text-xs font-bold uppercase tracking-widest hover:text-indigo-600 transition text-slate-500 dark:text-slate-400">Properties</a>
-                        <a href="#" class="text-xs font-bold uppercase tracking-widest hover:text-indigo-600 transition text-slate-500 dark:text-slate-400">Featured</a>
+                        <a href="{{ route('featured') }}" class="text-xs font-bold uppercase tracking-widest hover:text-indigo-600 transition {{ request()->routeIs('featured') ? 'text-indigo-600' : 'text-slate-500 dark:text-slate-400' }}">Featured</a>
                         @auth
                             <a href="{{ route('dashboard') }}" class="px-6 py-2.5 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-indigo-700 transition shadow-lg shadow-indigo-500/20">Dashboard</a>
                         @else

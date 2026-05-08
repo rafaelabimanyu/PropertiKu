@@ -16,11 +16,12 @@ class PropertyController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(Property::class, 'property');
+        // Removed authorizeResource as it's not compatible with Laravel 11's default controller
     }
 
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Property::class);
         $query = Property::query();
 
         // Search
@@ -64,11 +65,13 @@ class PropertyController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Property::class);
         return view('properties.create');
     }
 
     public function store(PropertyRequest $request)
     {
+        $this->authorize('create', Property::class);
         $validated = $request->validated();
         
         if ($request->hasFile('image')) {
@@ -89,6 +92,7 @@ class PropertyController extends Controller
 
     public function show(Property $property)
     {
+        $this->authorize('view', $property);
         $relatedProperties = Property::where('id', '!=', $property->id)
             ->where('city', $property->city)
             ->take(3)
@@ -99,11 +103,13 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
+        $this->authorize('update', $property);
         return view('properties.edit', compact('property'));
     }
 
     public function update(PropertyRequest $request, Property $property)
     {
+        $this->authorize('update', $property);
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
@@ -124,6 +130,7 @@ class PropertyController extends Controller
 
     public function destroy(Property $property)
     {
+        $this->authorize('delete', $property);
         if ($property->image) {
             Storage::disk('public')->delete($property->image);
         }

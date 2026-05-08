@@ -11,9 +11,14 @@ class DashboardController extends Controller
     public function index()
     {
         $user = auth()->user();
+        $totalPropertiesGlobal = Property::count();
+        $totalUsersGlobal = \App\Models\User::count();
 
         if ($user->isAdmin()) {
-            return view('dashboard.admin');
+            return view('dashboard.admin', [
+                'totalProperties' => $totalPropertiesGlobal,
+                'totalUsers' => $totalUsersGlobal,
+            ]);
         }
 
         if ($user->isAgent()) {
@@ -22,6 +27,9 @@ class DashboardController extends Controller
             return view('dashboard.agent', compact('totalProperties', 'recentProperties'));
         }
 
-        return view('dashboard.buyer');
+        // For Buyers
+        return view('dashboard.buyer', [
+            'totalProperties' => $totalPropertiesGlobal
+        ]);
     }
 }
