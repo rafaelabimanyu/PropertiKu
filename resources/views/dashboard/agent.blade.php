@@ -19,10 +19,16 @@
             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>',
         ],
         [
-            'label' => 'Leads',
-            'url' => route('leads'),
-            'route' => 'leads',
-            'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>',
+            'label' => 'Bookings',
+            'url' => route('bookings'),
+            'route' => 'bookings',
+            'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>',
+        ],
+        [
+            'label' => 'Messages',
+            'url' => route('chat.inbox'),
+            'route' => 'chat.*',
+            'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>',
         ],
         [
             'label' => 'Profile',
@@ -61,24 +67,24 @@
             <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-blue-600 mb-5 group-hover:scale-110 transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
             </div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">New Leads</p>
-            <h4 class="text-3xl font-black dark:text-white">24</h4>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Unread Messages</p>
+            <h4 class="text-3xl font-black dark:text-white">{{ $unreadMessages ?? 0 }}</h4>
         </div>
         <div class="relative overflow-hidden bg-white dark:bg-gray-900 p-7 rounded-3xl shadow-sm border border-slate-100 dark:border-gray-800 group hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
             <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-700"></div>
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center text-indigo-600 mb-5 group-hover:scale-110 transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
             </div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Total Views</p>
-            <h4 class="text-3xl font-black dark:text-white">8.2k</h4>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Pending Bookings</p>
+            <h4 class="text-3xl font-black dark:text-white">{{ $pendingBookings ?? 0 }}</h4>
         </div>
         <div class="relative overflow-hidden bg-white dark:bg-gray-900 p-7 rounded-3xl shadow-sm border border-slate-100 dark:border-gray-800 group hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
             <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-700"></div>
             <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center text-amber-600 mb-5 group-hover:scale-110 transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Revenue Est.</p>
-            <h4 class="text-3xl font-black dark:text-white">$4.5k</h4>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Total Bookings</p>
+            <h4 class="text-3xl font-black dark:text-white">{{ $totalBookings ?? 0 }}</h4>
         </div>
     </div>
 

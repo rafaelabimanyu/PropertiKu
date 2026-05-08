@@ -19,6 +19,12 @@
             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>',
         ],
         [
+            'label' => 'Bookings',
+            'url' => route('bookings'),
+            'route' => 'bookings',
+            'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>',
+        ],
+        [
             'label' => 'Reports',
             'url' => route('reports'),
             'route' => 'reports',
@@ -72,9 +78,9 @@
             <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center text-amber-600 mb-5 group-hover:scale-110 transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Pending Approvals</p>
-            <h4 class="text-3xl font-black text-amber-500">14</h4>
-            <div class="mt-3 text-[10px] font-bold text-amber-500 uppercase tracking-widest">Action Required</div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Pending Bookings</p>
+            <h4 class="text-3xl font-black text-amber-500">{{ $pendingBookings ?? 0 }}</h4>
+            <div class="mt-3 text-[10px] font-bold text-amber-500 uppercase tracking-widest">Total Bookings: {{ $totalBookings ?? 0 }}</div>
         </div>
         <div class="relative overflow-hidden bg-white dark:bg-gray-900 p-7 rounded-3xl shadow-sm border border-slate-100 dark:border-gray-800 group hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
             <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-700"></div>

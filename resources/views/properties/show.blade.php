@@ -1,13 +1,10 @@
 <x-app-layout>
     <head>
-        <!-- Leaflet CSS -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-        <style>
-            #map { height: 400px; width: 100%; border-radius: 2.5rem; z-index: 10; }
-        </style>
+        <style>#map { height: 400px; width: 100%; border-radius: 2.5rem; z-index: 10; }</style>
     </head>
 
-    <div class="bg-slate-50 dark:bg-gray-950 pt-32 pb-20 min-h-screen">
+    <div class="bg-slate-50 dark:bg-gray-950 pt-32 pb-20 min-h-screen" x-data="{ showBooking: false }">
         <div class="max-w-7xl mx-auto px-6 sm:px-8">
             
             <!-- Breadcrumb / Back Link -->
@@ -19,11 +16,24 @@
                     Back to Listings
                 </a>
                 
-                @can('update', $property)
-                    <div class="flex gap-4">
-                        <a href="{{ route('properties.edit', $property) }}" class="px-6 py-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-indigo-600 hover:text-white transition">Edit</a>
-                    </div>
-                @endcan
+                <div class="flex gap-3">
+                    @auth
+                        {{-- Favorite Toggle --}}
+                        <form method="POST" action="{{ route('favorites.toggle') }}">
+                            @csrf
+                            <input type="hidden" name="property_id" value="{{ $property->id }}">
+                            @php $isFav = auth()->user()->favorites->contains($property->id); @endphp
+                            <button class="flex items-center px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition shadow-sm
+                                {{ $isFav ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-white dark:bg-gray-800 text-slate-500 hover:text-red-500 border border-slate-200 dark:border-gray-700' }}">
+                                <svg class="w-4 h-4 mr-2" fill="{{ $isFav ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                                {{ $isFav ? 'Saved' : 'Save' }}
+                            </button>
+                        </form>
+                    @endauth
+                    @can('update', $property)
+                        <a href="{{ route('properties.edit', $property) }}" class="px-6 py-2.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-indigo-600 hover:text-white transition">Edit</a>
+                    @endcan
+                </div>
             </div>
 
             <!-- Hero Detail Section -->
@@ -38,23 +48,11 @@
                                 <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             </div>
                         @endif
-
                         <div class="absolute top-8 left-8">
                             <span class="px-6 py-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] {{ $property->status === 'sale' ? 'text-emerald-600' : 'text-blue-600' }}">
                                 {{ ucfirst($property->status) }}
                             </span>
                         </div>
-                    </div>
-                    
-                    <!-- Dummy Secondary Images -->
-                    <div class="grid grid-cols-4 gap-6 mt-8">
-                        @for($i=0; $i<4; $i++)
-                            <div class="aspect-square bg-slate-200 dark:bg-gray-800 rounded-3xl overflow-hidden cursor-pointer hover:opacity-80 transition border-2 border-transparent hover:border-indigo-600">
-                                <div class="w-full h-full flex items-center justify-center text-slate-400">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                </div>
-                            </div>
-                        @endfor
                     </div>
                 </div>
 
@@ -84,8 +82,17 @@
                             </div>
                         </div>
 
-                        <button class="w-full py-5 bg-indigo-600 text-white font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:bg-indigo-700 transition shadow-xl shadow-indigo-500/30 mb-4">Book a Survey</button>
-                        <button class="w-full py-5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:opacity-90 transition">Chat Agent</button>
+                        @auth
+                            <button @click="showBooking = true" class="w-full py-5 bg-indigo-600 text-white font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:bg-indigo-700 transition shadow-xl shadow-indigo-500/30 mb-4">
+                                Book a Survey
+                            </button>
+                            <a href="{{ route('chat.show', $property->user_id) }}" class="block text-center w-full py-5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:opacity-90 transition">
+                                Chat Agent
+                            </a>
+                        @else
+                            <a href="{{ route('login') }}" class="block text-center w-full py-5 bg-indigo-600 text-white font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:bg-indigo-700 transition shadow-xl shadow-indigo-500/30 mb-4">Login to Book</a>
+                            <a href="{{ route('login') }}" class="block text-center w-full py-5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:opacity-90 transition">Login to Chat</a>
+                        @endauth
                     </div>
 
                     <!-- Agent Card -->
@@ -101,10 +108,10 @@
                 </div>
             </div>
 
-            <!-- Property Description & Maps -->
+            <!-- Description & Map -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <div class="lg:col-span-8 space-y-16">
-                    <!-- Features/Facilities -->
+                    <!-- Facilities -->
                     <div>
                         <h3 class="text-2xl font-black mb-10 tracking-tight">Property <span class="text-gradient">Highlights</span></h3>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -118,7 +125,7 @@
                                     </div>
                                 @endforeach
                             @else
-                                @foreach(['Smart Home System', 'Infinity Pool', '24/7 Security', 'Private Parking'] as $feat)
+                                @foreach(['Smart Home', 'Pool', 'Security', 'Parking'] as $feat)
                                     <div class="flex items-center p-4 bg-white dark:bg-gray-900 rounded-2xl border border-slate-100 dark:border-gray-800 opacity-50">
                                         <div class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center mr-4">
                                             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -133,22 +140,16 @@
                     <!-- Description -->
                     <div>
                         <h3 class="text-2xl font-black mb-6 tracking-tight">Description</h3>
-                        <p class="text-slate-500 dark:text-slate-400 font-medium leading-loose text-justify">
-                            {{ $property->description }}
-                        </p>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium leading-loose text-justify">{{ $property->description }}</p>
                     </div>
 
-                    <!-- Location Map -->
+                    <!-- Map -->
                     <div>
                         <h3 class="text-2xl font-black mb-10 tracking-tight">Location <span class="text-gradient">Map</span></h3>
                         <div id="map" class="shadow-2xl"></div>
-                        <p class="mt-6 text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            Coordinates: {{ $property->latitude ?? '-8.4095' }}, {{ $property->longitude ?? '115.1889' }}
-                        </p>
                     </div>
 
-                    <!-- Related Properties -->
+                    <!-- Related -->
                     <div class="pt-20">
                         <h3 class="text-2xl font-black mb-12 tracking-tight">Similar <span class="text-gradient">Properties</span></h3>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -160,24 +161,68 @@
                 </div>
             </div>
         </div>
+
+        {{-- Booking Modal --}}
+        @auth
+        <div x-show="showBooking" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-[60] flex items-center justify-center p-4" style="display:none;">
+            <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" @click="showBooking = false"></div>
+            <div class="relative bg-white dark:bg-gray-900 rounded-3xl p-8 max-w-md w-full shadow-2xl z-10" @click.away="showBooking = false">
+                <button @click="showBooking = false" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+                <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center text-indigo-600 mb-5">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </div>
+                <h3 class="text-xl font-black dark:text-white mb-1">Book a Survey</h3>
+                <p class="text-xs text-slate-500 mb-6">Schedule a visit to <strong>{{ $property->title }}</strong></p>
+
+                <form method="POST" action="{{ route('bookings.store') }}" class="space-y-4">
+                    @csrf
+                    <input type="hidden" name="property_id" value="{{ $property->id }}">
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Survey Date</label>
+                        <input type="date" name="survey_date" min="{{ date('Y-m-d') }}" required
+                            class="w-full px-4 py-3 bg-slate-50 dark:bg-gray-800 border-0 rounded-xl text-sm font-bold focus:ring-2 focus:ring-indigo-500 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Preferred Time</label>
+                        <select name="survey_time" required class="w-full px-4 py-3 bg-slate-50 dark:bg-gray-800 border-0 rounded-xl text-sm font-bold focus:ring-2 focus:ring-indigo-500 dark:text-white">
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="13:00">01:00 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Notes (Optional)</label>
+                        <textarea name="notes" rows="3" placeholder="Any special requests..."
+                            class="w-full px-4 py-3 bg-slate-50 dark:bg-gray-800 border-0 rounded-xl text-sm font-medium focus:ring-2 focus:ring-indigo-500 dark:text-white placeholder-slate-400 resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-4 bg-indigo-600 text-white font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:bg-indigo-700 transition shadow-xl shadow-indigo-500/30">
+                        Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+        @endauth
     </div>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var lat = {{ $property->latitude ?? '-8.4095' }};
             var lng = {{ $property->longitude ?? '115.1889' }};
-            
             var map = L.map('map').setView([lat, lng], 13);
-
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
-
-            L.marker([lat, lng]).addTo(map)
-                .bindPopup('{{ $property->title }}')
-                .openPopup();
+            L.marker([lat, lng]).addTo(map).bindPopup('{{ $property->title }}').openPopup();
         });
     </script>
 </x-app-layout>
