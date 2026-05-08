@@ -9,6 +9,15 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
+    safelist: [
+        {pattern: /bg-(indigo|emerald|violet|amber|blue|red|purple)-(50|100|400|500|600|700|900)/, variants: ['hover','dark']},
+        {pattern: /text-(indigo|emerald|violet|amber|blue|red|purple)-(400|500|600|700)/, variants: ['hover','dark']},
+        {pattern: /from-(indigo|emerald|violet)-(500|700)/},
+        {pattern: /to-(indigo|emerald|violet)-(500|700)/},
+        {pattern: /shadow-(indigo|emerald|violet)-(500)/},
+        {pattern: /border-(indigo|emerald|violet)-(300)/, variants: ['hover']},
+    ],
+
     theme: {
         extend: {
             fontFamily: {

@@ -11,25 +11,46 @@ class DashboardController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $totalPropertiesGlobal = Property::count();
-        $totalUsersGlobal = \App\Models\User::count();
 
         if ($user->isAdmin()) {
-            return view('dashboard.admin', [
-                'totalProperties' => $totalPropertiesGlobal,
-                'totalUsers' => $totalUsersGlobal,
-            ]);
+            return redirect()->route('dashboard.admin');
         }
 
         if ($user->isAgent()) {
-            $totalProperties = Property::where('user_id', $user->id)->count();
-            $recentProperties = Property::where('user_id', $user->id)->latest()->take(5)->get();
-            return view('dashboard.agent', compact('totalProperties', 'recentProperties'));
+            return redirect()->route('dashboard.agent');
         }
 
-        // For Buyers
-        return view('dashboard.buyer', [
-            'totalProperties' => $totalPropertiesGlobal
-        ]);
+        return redirect()->route('dashboard.buyer');
+    }
+
+    public function admin()
+    {
+        $this->authorizeRole('admin');
+        $totalProperties = Property::count();
+        $totalUsers = \App\Models\User::count();
+        return view('dashboard.admin', compact('totalProperties', 'totalUsers'));
+    }
+
+    public function agent()
+    {
+        $this->authorizeRole('agent');
+        $user = auth()->user();
+        $totalProperties = Property::where('user_id', $user->id)->count();
+        $recentProperties = Property::where('user_id', $user->id)->latest()->take(5)->get();
+        return view('dashboard.agent', compact('totalProperties', 'recentProperties'));
+    }
+
+    public function buyer()
+    {
+        $this->authorizeRole('buyer');
+        $totalProperties = Property::count();
+        return view('dashboard.buyer', compact('totalProperties'));
+    }
+
+    protected function authorizeRole($role)
+    {
+        if (auth()->user()->role !== $role) {
+            abort(403, 'Unauthorized action.');
+        }
     }
 }
