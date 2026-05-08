@@ -14,24 +14,27 @@ class ChatController extends Controller
     {
         $userId = auth()->id();
 
-        // Get unique conversations (grouped by the other person)
-        $conversations = Message::where('sender_id', $userId)
+        // Get unique conversations
+        $messages = Message::where('sender_id', $userId)
             ->orWhere('receiver_id', $userId)
+            ->with(['sender', 'receiver', 'property'])
             ->latest()
-            ->get()
-            ->groupBy(function ($msg) use ($userId) {
+            ->get();
+
+        $conversations = $messages->groupBy(function ($msg) use ($userId) {
                 return $msg->sender_id === $userId ? $msg->receiver_id : $msg->sender_id;
             })
-            ->map(function ($messages) use ($userId) {
-                $lastMsg = $messages->first();
-                $otherId = $lastMsg->sender_id === $userId ? $lastMsg->receiver_id : $lastMsg->sender_id;
+            ->map(function ($msgs) use ($userId) {
+                $lastMsg = $msgs->first();
+                $otherUser = $lastMsg->sender_id === $userId ? $lastMsg->receiver : $lastMsg->sender;
                 return [
-                    'user' => User::find($otherId),
+                    'user' => $otherUser,
                     'last_message' => $lastMsg,
-                    'unread' => $messages->where('receiver_id', $userId)->where('is_read', false)->count(),
+                    'unread' => $msgs->where('receiver_id', $userId)->where('is_read', false)->count(),
                     'property' => $lastMsg->property,
                 ];
             })
+            ->filter(fn($item) => $item['user'] !== null)
             ->values();
 
         return view('chat.inbox', compact('conversations'));

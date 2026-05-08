@@ -45,3 +45,18 @@
     background-size: 200% 200%;
     animation: gradient-move 15s ease infinite;
 }
+
+/* Skeleton Loader */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+.skeleton {
+    @apply bg-slate-200 dark:bg-gray-800 animate-pulse relative overflow-hidden;
+}
+.skeleton::after {
+    content: "";
+    @apply absolute inset-0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    animation: shimmer 1.5s infinite;
+}
