@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
     Route::get('/bookings/buyer', [BookingController::class, 'buyerIndex'])->name('bookings.buyer');
     Route::get('/bookings/agent', [BookingController::class, 'agentIndex'])->name('bookings.agent');
+    Route::get('/bookings/admin', [BookingController::class, 'adminIndex'])->name('bookings.admin');
     Route::patch('/bookings/{booking}/status', [BookingController::class, 'updateStatus'])->name('bookings.updateStatus');
 
     // Favorites
@@ -53,7 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
 
     // Remaining placeholder routes
-    Route::get('/bookings', fn() => redirect()->route(auth()->user()->isAgent() ? 'bookings.agent' : 'bookings.buyer'))->name('bookings');
+    Route::get('/bookings', fn() => redirect()->route(auth()->user()->isAdmin() ? 'bookings.admin' : (auth()->user()->isAgent() ? 'bookings.agent' : 'bookings.buyer')))->name('bookings');
     Route::get('/leads', fn() => view('placeholders.leads'))->name('leads');
     Route::get('/users', fn() => view('placeholders.users'))->name('users');
     Route::get('/reports', fn() => view('placeholders.reports'))->name('reports');

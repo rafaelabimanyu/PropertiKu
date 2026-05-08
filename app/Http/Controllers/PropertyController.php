@@ -22,7 +22,7 @@ class PropertyController extends Controller
     public function index(Request $request)
     {
         $this->authorize('viewAny', Property::class);
-        $query = Property::query();
+        $query = Property::with('user');
 
         // Search
         if ($request->filled('search')) {
@@ -93,7 +93,7 @@ class PropertyController extends Controller
     public function show(Property $property)
     {
         $this->authorize('view', $property);
-        $relatedProperties = Property::where('id', '!=', $property->id)
+        $relatedProperties = Property::with('user')->where('id', '!=', $property->id)
             ->where('city', $property->city)
             ->take(3)
             ->get();

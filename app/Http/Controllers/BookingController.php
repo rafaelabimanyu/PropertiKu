@@ -61,6 +61,13 @@ class BookingController extends Controller
         return view('bookings.agent-index', compact('bookings'));
     }
 
+    public function adminIndex()
+    {
+        if (!auth()->user()->isAdmin()) abort(403);
+        $bookings = Booking::with(['property', 'buyer', 'agent'])->latest()->paginate(15);
+        return view('bookings.admin-index', compact('bookings'));
+    }
+
     public function updateStatus(Request $request, Booking $booking)
     {
         if ($booking->agent_id !== auth()->id() && !auth()->user()->isAdmin()) {
