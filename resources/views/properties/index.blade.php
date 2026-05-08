@@ -1,63 +1,87 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Property Listings') }}
-            </h2>
-            @can('create', App\Models\Property::class)
-                <a href="{{ route('properties.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition">
-                    {{ __('Add Property') }}
-                </a>
-            @endcan
-        </div>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if(session('success'))
-                <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                    {{ session('success') }}
+    <div class="bg-slate-50 dark:bg-gray-950 min-h-screen">
+        <!-- Search & Filter Header -->
+        <div class="pt-32 pb-12 bg-white dark:bg-gray-900 border-b border-slate-200 dark:border-gray-800">
+            <div class="max-w-7xl mx-auto px-6 sm:px-8">
+                <div class="mb-12 text-center lg:text-left">
+                    <h1 class="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Explore <span class="text-gradient">Collections</span></h1>
+                    <p class="text-slate-500 dark:text-slate-400 font-medium">Discover 1,200+ premium properties across Indonesia's most exclusive locations.</p>
                 </div>
-            @endif
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($properties as $property)
-                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-gray-100 dark:border-gray-700 group hover:shadow-md transition">
-                        <div class="aspect-video bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                            @if($property->image)
-                                <img src="{{ asset('storage/' . $property->image) }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                            @else
-                                <div class="flex items-center justify-center h-full text-gray-400">
-                                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="text-lg font-bold text-gray-900 dark:text-white truncate pr-4">{{ $property->title }}</h3>
-                                <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 uppercase">
-                                    {{ $property->status }}
-                                </span>
-                            </div>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 flex items-center">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                {{ $property->city }}
-                            </p>
-                            <div class="flex items-center justify-between mt-auto border-t border-gray-100 dark:border-gray-700 pt-4">
-                                <p class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
-                                    ${{ number_format($property->price, 0) }}
-                                </p>
-                                <a href="{{ route('properties.show', $property) }}" class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-indigo-600 transition">
-                                    {{ __('Details') }} &rarr;
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+                
+                <x-search-floating />
             </div>
+        </div>
 
-            <div class="mt-8">
-                {{ $properties->links() }}
+        <div class="py-20">
+            <div class="max-w-7xl mx-auto px-6 sm:px-8">
+                <div class="flex flex-col lg:flex-row gap-12">
+                    
+                    <!-- Sidebar Filters -->
+                    <aside class="lg:w-80 flex-shrink-0">
+                        <div class="glass dark:glass-dark rounded-[2.5rem] p-8 sticky top-32">
+                            <h3 class="text-lg font-black mb-8 uppercase tracking-widest text-indigo-600">Filters</h3>
+                            
+                            <form action="{{ route('properties.index') }}" method="GET" class="space-y-8">
+                                <!-- Maintain Search if exists -->
+                                <input type="hidden" name="search" value="{{ request('search') }}">
+
+                                <!-- Price Range -->
+                                <div>
+                                    <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Price Range ($)</label>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="Min" class="w-full bg-slate-100 dark:bg-gray-800 border-none rounded-2xl text-xs p-3 focus:ring-1 focus:ring-indigo-500">
+                                        <input type="number" name="max_price" value="{{ request('max_price') }}" placeholder="Max" class="w-full bg-slate-100 dark:bg-gray-800 border-none rounded-2xl text-xs p-3 focus:ring-1 focus:ring-indigo-500">
+                                    </div>
+                                </div>
+
+                                <!-- Bedrooms -->
+                                <div>
+                                    <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Min Bedrooms</label>
+                                    <select name="bedrooms" class="w-full bg-slate-100 dark:bg-gray-800 border-none rounded-2xl text-xs p-3 focus:ring-1 focus:ring-indigo-500">
+                                        <option value="">Any</option>
+                                        @foreach([1,2,3,4,5] as $num)
+                                            <option value="{{ $num }}" {{ request('bedrooms') == $num ? 'selected' : '' }}>{{ $num }}+ Beds</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Min Area -->
+                                <div>
+                                    <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Min Area (ft²)</label>
+                                    <input type="number" name="min_area" value="{{ request('min_area') }}" placeholder="e.g. 1000" class="w-full bg-slate-100 dark:bg-gray-800 border-none rounded-2xl text-xs p-3 focus:ring-1 focus:ring-indigo-500">
+                                </div>
+
+                                <button type="submit" class="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:bg-indigo-600 hover:text-white transition shadow-xl">Apply Filters</button>
+                                
+                                <a href="{{ route('properties.index') }}" class="block text-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 transition">Reset All</a>
+                            </form>
+                        </div>
+                    </aside>
+
+                    <!-- Property Grid -->
+                    <main class="flex-1">
+                        @if($properties->isEmpty())
+                            <div class="py-20 text-center glass dark:glass-dark rounded-[3rem]">
+                                <div class="w-20 h-20 bg-slate-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2">No matching properties</h3>
+                                <p class="text-slate-500 dark:text-slate-400">Try adjusting your filters or search terms.</p>
+                            </div>
+                        @else
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                @foreach($properties as $property)
+                                    <x-property-card :property="$property" />
+                                @endforeach
+                            </div>
+
+                            <div class="mt-16">
+                                {{ $properties->links() }}
+                            </div>
+                        @endif
+                    </main>
+
+                </div>
             </div>
         </div>
     </div>

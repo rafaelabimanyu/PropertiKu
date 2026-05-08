@@ -79,6 +79,26 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('description')" />
                             </div>
 
+                            <!-- Facilities -->
+                            <div class="col-span-2">
+                                <x-input-label for="facilities" :value="__('Facilities (comma separated)')" />
+                                <x-text-input id="facilities" name="facilities_raw" type="text" class="mt-1 block w-full" :value="old('facilities_raw')" placeholder="e.g. Smart Home, Pool, Garden" />
+                                <x-input-error class="mt-2" :messages="$errors->get('facilities')" />
+                            </div>
+
+                            <!-- Map Coordinates -->
+                            <div>
+                                <x-input-label for="latitude" :value="__('Latitude (optional)')" />
+                                <x-text-input id="latitude" name="latitude" type="text" class="mt-1 block w-full" :value="old('latitude')" placeholder="-8.4095" />
+                                <x-input-error class="mt-2" :messages="$errors->get('latitude')" />
+                            </div>
+
+                            <div>
+                                <x-input-label for="longitude" :value="__('Longitude (optional)')" />
+                                <x-text-input id="longitude" name="longitude" type="text" class="mt-1 block w-full" :value="old('longitude')" placeholder="115.1889" />
+                                <x-input-error class="mt-2" :messages="$errors->get('longitude')" />
+                            </div>
+
                             <!-- Image -->
                             <div class="col-span-2">
                                 <x-input-label for="image" :value="__('Property Image')" />

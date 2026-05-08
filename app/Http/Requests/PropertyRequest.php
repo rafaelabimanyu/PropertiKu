@@ -27,12 +27,15 @@ class PropertyRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'city' => 'required|string|max:255',
             'address' => 'required|string',
-            'bedrooms' => 'required|integer|min:0',
-            'bathrooms' => 'required|integer|min:0',
-            'area' => 'required|numeric|min:0',
-            'status' => 'required|in:sale,rent',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'bedrooms' => ['required', 'integer', 'min:0'],
+            'bathrooms' => ['required', 'integer', 'min:0'],
+            'area' => ['required', 'numeric', 'min:0'],
+            'status' => ['required', 'string', 'in:sale,rent'],
+            'description' => ['required', 'string'],
+            'image' => ['nullable', 'image', 'max:2048'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
+            'facilities' => ['nullable', 'array'],
         ];
     }
 }
