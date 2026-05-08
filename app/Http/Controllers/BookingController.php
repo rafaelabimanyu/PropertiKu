@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Property;
 use App\Models\AppNotification;
+use App\Models\Lead;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -36,6 +37,22 @@ class BookingController extends Controller
             'New Booking Request',
             auth()->user()->name . ' wants to visit "' . $property->title . '" on ' . $booking->survey_date->format('M d, Y'),
             route('bookings.agent')
+        );
+
+        // Create Lead
+        Lead::firstOrCreate(
+            [
+                'agent_id' => $property->user_id,
+                'user_id' => auth()->id(),
+                'property_id' => $property->id,
+            ],
+            [
+                'name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+                'phone' => auth()->user()->phone,
+                'source' => 'booking',
+                'status' => 'new',
+            ]
         );
 
         return back()->with('success', 'Booking submitted successfully! The agent will review your request.');

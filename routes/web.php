@@ -60,10 +60,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Remaining placeholder routes
     Route::get('/bookings', fn() => redirect()->route(auth()->user()->isAdmin() ? 'bookings.admin' : (auth()->user()->isAgent() ? 'bookings.agent' : 'bookings.buyer')))->name('bookings');
-    Route::get('/leads', fn() => view('placeholders.leads'))->name('leads');
+    Route::get('/leads', [\App\Http\Controllers\LeadController::class, 'index'])->name('leads');
+    Route::patch('/leads/{lead}/status', [\App\Http\Controllers\LeadController::class, 'updateStatus'])->name('leads.update');
     Route::get('/users', fn() => view('placeholders.users'))->name('users');
     Route::get('/reports', fn() => view('placeholders.reports'))->name('reports');
     Route::get('/settings', fn() => view('placeholders.settings'))->name('settings');
+
+    // Verification System
+    Route::get('/dashboard/agent/verification', [\App\Http\Controllers\VerificationController::class, 'index'])->name('verification.index');
+    Route::post('/dashboard/agent/verification', [\App\Http\Controllers\VerificationController::class, 'submit'])->name('verification.submit');
+    Route::get('/dashboard/admin/verifications', [\App\Http\Controllers\VerificationController::class, 'adminIndex'])->name('admin.verifications');
+    Route::patch('/dashboard/admin/verifications/{user}/approve', [\App\Http\Controllers\VerificationController::class, 'approve'])->name('admin.verifications.approve');
+    Route::patch('/dashboard/admin/verifications/{user}/reject', [\App\Http\Controllers\VerificationController::class, 'reject'])->name('admin.verifications.reject');
+
+    // Review System
+    Route::post('/properties/{property}/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+
+    // Premium System
+    Route::patch('/properties/{property}/upgrade', [\App\Http\Controllers\PremiumController::class, 'upgrade'])->name('properties.upgrade');
 });
 
 require __DIR__.'/auth.php';

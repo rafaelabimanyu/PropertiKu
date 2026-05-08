@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\AppNotification;
+use App\Models\Lead;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
@@ -80,6 +81,22 @@ class ChatController extends Controller
             'New Message',
             auth()->user()->name . ': ' . \Str::limit($validated['message'], 50),
             route('chat.show', $validated['receiver_id'])
+        );
+
+        // Create Lead
+        Lead::firstOrCreate(
+            [
+                'agent_id' => $validated['receiver_id'],
+                'user_id' => auth()->id(),
+                'property_id' => $validated['property_id'] ?? null,
+            ],
+            [
+                'name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+                'phone' => auth()->user()->phone,
+                'source' => 'chat',
+                'status' => 'new',
+            ]
         );
 
         return back()->with('success', 'Message sent!');

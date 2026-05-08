@@ -4,8 +4,18 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="description" content="PropertiKu - Premium AI-Powered Real Estate Marketplace. Find your dream property with ease and trust.">
+        <meta name="keywords" content="real estate, property, luxury house, apartment, villa, buy house, rent house, PropertiKu">
+        <meta name="author" content="PropertiKu Team">
+        
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:title" content="{{ $title ?? config('app.name', 'PropertiKu') }}">
+        <meta property="og:description" content="Premium AI-Powered Real Estate Marketplace. Find your dream property with ease and trust.">
+        <meta property="og:image" content="{{ asset('images/og-image.jpg') }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ isset($title) ? $title . ' | ' . config('app.name', 'PropertiKu') : config('app.name', 'PropertiKu') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

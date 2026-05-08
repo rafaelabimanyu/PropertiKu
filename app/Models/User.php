@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'email', 'password', 'role', 'is_verified', 'company_name', 'phone', 'license_number', 'verification_status', 'verification_notes'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -25,6 +25,9 @@ class User extends Authenticatable
     public function isAdmin(): bool { return $this->role === self::ROLE_ADMIN; }
     public function isAgent(): bool { return $this->role === self::ROLE_AGENT; }
     public function isBuyer(): bool { return $this->role === self::ROLE_BUYER; }
+
+    public function isVerified(): bool { return $this->is_verified; }
+    public function isPendingVerification(): bool { return $this->verification_status === 'pending'; }
 
     public function properties(): HasMany { return $this->hasMany(Property::class); }
     public function favorites(): BelongsToMany { return $this->belongsToMany(Property::class, 'favorites')->withTimestamps(); }

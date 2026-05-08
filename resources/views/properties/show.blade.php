@@ -48,8 +48,14 @@
                                 <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             </div>
                         @endif
-                        <div class="absolute top-8 left-8">
-                            <span class="px-6 py-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] {{ $property->status === 'sale' ? 'text-emerald-600' : 'text-blue-600' }}">
+                        <div class="absolute top-8 left-8 flex flex-col gap-3">
+                            @if($property->is_featured)
+                                <span class="px-6 py-2 bg-indigo-600 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-xl flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"></path></svg>
+                                    Featured Listing
+                                </span>
+                            @endif
+                            <span class="px-6 py-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] {{ $property->status === 'sale' ? 'text-emerald-600' : 'text-blue-600' }} self-start">
                                 {{ ucfirst($property->status) }}
                             </span>
                         </div>
@@ -60,7 +66,12 @@
                 <div class="lg:col-span-4 space-y-10">
                     <div class="glass dark:glass-dark rounded-[3rem] p-10 shadow-xl border border-white/10">
                         <h1 class="text-3xl font-black text-slate-900 dark:text-white mb-4 leading-tight">{{ $property->title }}</h1>
-                        <p class="text-indigo-600 dark:text-indigo-400 text-4xl font-black mb-8">${{ number_format($property->price, 0) }}</p>
+                        <p class="text-indigo-600 dark:text-indigo-400 text-4xl font-black mb-4">${{ number_format($property->price, 0) }}</p>
+                        
+                        <div class="flex items-center mb-8">
+                            <x-review-stars :rating="round($property->averageRating())" />
+                            <span class="ml-2 text-xs font-bold text-slate-400">({{ $property->reviews->count() }} Reviews)</span>
+                        </div>
                         
                         <div class="flex items-center text-slate-500 dark:text-slate-400 mb-10 pb-8 border-b border-slate-100 dark:border-gray-800">
                             <svg class="w-5 h-5 mr-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
@@ -97,12 +108,24 @@
 
                     <!-- Agent Card -->
                     <div class="flex items-center p-8 glass dark:glass-dark rounded-[3rem]">
-                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-emerald-500 flex items-center justify-center text-white font-black text-xl mr-6">
-                            {{ substr($property->user->name, 0, 1) }}
+                        <div class="relative">
+                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-emerald-500 flex items-center justify-center text-white font-black text-xl mr-6 relative">
+                                {{ substr($property->user->name, 0, 1) }}
+                                @if($property->user->is_verified)
+                                    <div class="absolute -top-2 -right-2 w-6 h-6 bg-emerald-500 rounded-full border-2 border-white dark:border-gray-900 flex items-center justify-center text-white shadow-lg">
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path></svg>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                         <div>
-                            <p class="text-xs font-black uppercase tracking-widest text-indigo-600 mb-1">Listed By</p>
-                            <p class="text-lg font-black">{{ $property->user->name }}</p>
+                            <div class="flex items-center gap-2 mb-1">
+                                <p class="text-xs font-black uppercase tracking-widest text-indigo-600">Listed By</p>
+                                @if($property->user->is_verified)
+                                    <span class="px-2 py-0.5 bg-emerald-100 text-emerald-600 rounded text-[7px] font-black uppercase tracking-wider">Verified Agent</span>
+                                @endif
+                            </div>
+                            <p class="text-lg font-black dark:text-white">{{ $property->user->name }}</p>
                         </div>
                     </div>
                 </div>
@@ -141,6 +164,97 @@
                     <div>
                         <h3 class="text-2xl font-black mb-6 tracking-tight">Description</h3>
                         <p class="text-slate-500 dark:text-slate-400 font-medium leading-loose text-justify">{{ $property->description }}</p>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div>
+                        <div class="flex items-center justify-between mb-10">
+                            <h3 class="text-2xl font-black tracking-tight">User <span class="text-gradient">Reviews</span></h3>
+                            <div class="flex items-center bg-white dark:bg-gray-900 px-4 py-2 rounded-2xl border border-slate-100 dark:border-gray-800 shadow-sm">
+                                <span class="text-2xl font-black text-amber-500 mr-2">{{ number_format($property->averageRating(), 1) }}</span>
+                                <x-review-stars :rating="round($property->averageRating())" size="w-3 h-3" />
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            @forelse($property->reviews as $review)
+                                <div class="p-8 bg-white dark:bg-gray-900 rounded-[2rem] border border-slate-100 dark:border-gray-800 shadow-sm">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-gray-800 flex items-center justify-center font-black text-slate-500 mr-4">
+                                                {{ substr($review->user->name, 0, 1) }}
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-black dark:text-white">{{ $review->user->name }}</p>
+                                                <p class="text-[10px] text-slate-400 font-medium">{{ $review->created_at->diffForHumans() }}</p>
+                                            </div>
+                                        </div>
+                                        <x-review-stars :rating="$review->property_rating" />
+                                    </div>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">{{ $review->comment }}</p>
+                                    
+                                    <div class="mt-4 flex gap-4">
+                                        <div class="flex items-center text-[10px] font-bold text-slate-400">
+                                            <span class="mr-2">Agent Prof:</span>
+                                            <x-review-stars :rating="$review->agent_professionalism" size="w-2.5 h-2.5" />
+                                        </div>
+                                        <div class="flex items-center text-[10px] font-bold text-slate-400">
+                                            <span class="mr-2">Agent Resp:</span>
+                                            <x-review-stars :rating="$review->agent_responsiveness" size="w-2.5 h-2.5" />
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="text-center py-12 bg-slate-50 dark:bg-gray-900/50 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-gray-800">
+                                    <p class="text-slate-400 font-medium italic text-sm">No reviews yet. Be the first to share your experience!</p>
+                                </div>
+                            @endforelse
+                        </div>
+
+                        @auth
+                            @php
+                                $canReview = \App\Models\Booking::where('property_id', $property->id)
+                                    ->where('buyer_id', auth()->id())
+                                    ->where('status', 'completed')
+                                    ->exists() && !\App\Models\Review::where('property_id', $property->id)->where('user_id', auth()->id())->exists();
+                            @endphp
+
+                            @if($canReview)
+                                <div class="mt-12 p-8 bg-indigo-50 dark:bg-indigo-900/20 rounded-[2.5rem] border border-indigo-100 dark:border-indigo-900/30">
+                                    <h4 class="text-lg font-black text-indigo-900 dark:text-indigo-300 mb-6">Leave a Review</h4>
+                                    <form action="{{ route('reviews.store', $property) }}" method="POST" class="space-y-6">
+                                        @csrf
+                                        <div class="grid md:grid-cols-3 gap-6">
+                                            <div>
+                                                <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-2">Property Rating</label>
+                                                <select name="property_rating" class="w-full bg-white dark:bg-gray-800 border-0 rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-indigo-500">
+                                                    @foreach([5,4,3,2,1] as $r) <option value="{{ $r }}">{{ $r }} Stars</option> @endforeach
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-2">Agent Professionalism</label>
+                                                <select name="agent_professionalism" class="w-full bg-white dark:bg-gray-800 border-0 rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-indigo-500">
+                                                    @foreach([5,4,3,2,1] as $r) <option value="{{ $r }}">{{ $r }} Stars</option> @endforeach
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-2">Agent Responsiveness</label>
+                                                <select name="agent_responsiveness" class="w-full bg-white dark:bg-gray-800 border-0 rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-indigo-500">
+                                                    @foreach([5,4,3,2,1] as $r) <option value="{{ $r }}">{{ $r }} Stars</option> @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-2">Your Experience</label>
+                                            <textarea name="comment" rows="4" class="w-full bg-white dark:bg-gray-800 border-0 rounded-2xl p-4 text-sm font-medium focus:ring-2 focus:ring-indigo-500 placeholder-slate-400" placeholder="Describe your experience with the property and the agent..."></textarea>
+                                        </div>
+                                        <button type="submit" class="px-8 py-4 bg-indigo-600 text-white font-black rounded-2xl text-[10px] uppercase tracking-widest hover:bg-indigo-700 transition shadow-xl shadow-indigo-500/30">
+                                            Submit Review
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
+                        @endauth
                     </div>
 
                     <!-- Map -->

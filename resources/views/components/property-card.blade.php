@@ -12,12 +12,24 @@
         
         <!-- Badges -->
         <div class="absolute top-6 left-6 flex flex-col gap-2">
+            @if($property->is_featured)
+                <span class="px-4 py-1.5 bg-indigo-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center">
+                    <svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"></path></svg>
+                    Featured
+                </span>
+            @endif
             <span class="px-4 py-1.5 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest {{ $property->status === 'sale' ? 'text-emerald-600' : 'text-blue-600' }}">
                 For {{ ucfirst($property->status) }}
             </span>
             <span class="px-3 py-1 bg-slate-900/80 backdrop-blur text-white rounded-full text-[9px] font-bold uppercase tracking-widest self-start">
                 {{ ucfirst($property->type) }}
             </span>
+            @if($property->user->is_verified)
+                <span class="px-3 py-1 bg-emerald-500/90 backdrop-blur text-white rounded-full text-[8px] font-bold uppercase tracking-widest self-start flex items-center">
+                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path></svg>
+                    Verified
+                </span>
+            @endif
         </div>
 
         <!-- Price Overlay -->

@@ -37,6 +37,12 @@
             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>',
         ],
         [
+            'label' => 'Verification Center',
+            'url' => route('verification.index'),
+            'route' => 'verification.*',
+            'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"></path></svg>',
+        ],
+        [
             'label' => 'Guide Agent',
             'url' => route('guide.agent'),
             'route' => 'guide.agent',
@@ -166,12 +172,26 @@
                                     </td>
                                     <td class="px-6 py-5 text-sm font-bold text-slate-600 dark:text-slate-400">${{ number_format($property->price) }}</td>
                                     <td class="px-6 py-5">
-                                        <span class="px-3 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 rounded-full text-[8px] font-black uppercase">{{ $property->status }}</span>
+                                        <div class="flex items-center gap-2">
+                                            <span class="px-3 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 rounded-full text-[8px] font-black uppercase">{{ $property->status }}</span>
+                                            @if($property->is_featured)
+                                                <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-[8px] font-black uppercase tracking-widest">Featured</span>
+                                            @endif
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-5">
-                                        <a href="{{ route('properties.edit', $property) }}" class="p-2 text-slate-400 hover:text-emerald-600 transition inline-block bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-slate-100 dark:border-gray-800 group-hover:border-emerald-200">
+                                    <td class="px-6 py-5 flex items-center space-x-2">
+                                        <a href="{{ route('properties.edit', $property) }}" title="Edit" class="p-2 text-slate-400 hover:text-emerald-600 transition inline-block bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-slate-100 dark:border-gray-800 group-hover:border-emerald-200">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                         </a>
+                                        @if(!$property->is_featured)
+                                            <form action="{{ route('properties.upgrade', $property) }}" method="POST" class="inline-block">
+                                                @csrf @method('PATCH')
+                                                <input type="hidden" name="plan" value="featured">
+                                                <button type="submit" title="Upgrade to Featured" class="p-2 text-slate-400 hover:text-indigo-600 transition inline-block bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-slate-100 dark:border-gray-800 group-hover:border-indigo-200">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
