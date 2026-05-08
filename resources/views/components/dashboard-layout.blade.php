@@ -10,9 +10,9 @@
 
 @php
     $colorMap = [
-        'buyer' => ['accent' => 'indigo', 'label' => 'Member Area', 'heading' => 'Buyer Panel'],
-        'agent' => ['accent' => 'emerald', 'label' => 'Agent Center', 'heading' => 'Property Manager'],
-        'admin' => ['accent' => 'violet', 'label' => 'System Admin', 'heading' => 'Command Center'],
+        'buyer' => ['accent' => 'blue', 'label' => 'Member Area', 'heading' => 'Buyer Portal'],
+        'agent' => ['accent' => 'emerald', 'label' => 'Sales Workspace', 'heading' => 'Agent Dashboard'],
+        'admin' => ['accent' => 'indigo', 'label' => 'Executive Center', 'heading' => 'Command Center'],
     ];
     $config = $colorMap[$role] ?? $colorMap['buyer'];
     $accent = $config['accent'];
