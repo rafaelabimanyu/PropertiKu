@@ -48,7 +48,7 @@ class DashboardController extends Controller
         $favCount = Favorite::where('user_id', $user->id)->count();
         $bookingCount = Booking::where('buyer_id', $user->id)->count();
         $unreadMessages = $user->unreadMessagesCount();
-        $recentProperties = Property::latest()->take(4)->get();
+        $recentProperties = Property::with('user')->latest()->take(4)->get();
         return view('dashboard.buyer', compact('favCount', 'bookingCount', 'unreadMessages', 'recentProperties'));
     }
 

@@ -10,14 +10,12 @@
         </div>
 
         @if($favorites->isEmpty())
-            <div class="text-center py-20 bg-white dark:bg-gray-900 rounded-3xl border border-slate-100 dark:border-gray-800">
-                <div class="w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-2xl flex items-center justify-center mx-auto mb-4 text-red-400">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                </div>
-                <h3 class="text-lg font-bold dark:text-white mb-2">No favorites yet</h3>
-                <p class="text-sm text-slate-500 mb-6">Click the ♥ icon on any property to save it here.</p>
-                <a href="{{ route('properties.index') }}" class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-indigo-700 transition">Browse Properties</a>
-            </div>
+            <x-empty-state 
+                title="Your wishlist is empty" 
+                subtitle="Save your dream properties to track them easily and get notified of price updates."
+                actionText="Explore Properties"
+                :actionUrl="route('properties.index')"
+            />
         @else
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($favorites as $property)

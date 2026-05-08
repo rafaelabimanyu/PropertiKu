@@ -16,6 +16,7 @@
                     <a href="{{ route('properties.index') }}" class="text-xs font-bold uppercase tracking-widest hover:text-indigo-600 transition {{ request()->routeIs('properties.*') ? 'text-indigo-600' : 'text-slate-500 dark:text-slate-400' }}">Properties</a>
                     <a href="{{ route('featured') }}" class="text-xs font-bold uppercase tracking-widest hover:text-indigo-600 transition {{ request()->routeIs('featured') ? 'text-indigo-600' : 'text-slate-500 dark:text-slate-400' }}">Featured</a>
                     <a href="{{ route('guide') }}" class="text-xs font-bold uppercase tracking-widest hover:text-indigo-600 transition {{ request()->routeIs('guide') ? 'text-indigo-600' : 'text-slate-500 dark:text-slate-400' }}">Guide</a>
+                    <a href="{{ route('contact') }}" class="text-xs font-bold uppercase tracking-widest hover:text-indigo-600 transition {{ request()->routeIs('contact') ? 'text-indigo-600' : 'text-slate-500 dark:text-slate-400' }}">Contact</a>
                 </div>
             </div>
 
@@ -83,6 +84,7 @@
             <a href="{{ route('properties.index') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('properties.*') ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-gray-800' }} transition">Properties</a>
             <a href="{{ route('featured') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('featured') ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-gray-800' }} transition">Featured</a>
             <a href="{{ route('guide') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('guide') ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-gray-800' }} transition">Guide</a>
+            <a href="{{ route('contact') }}" class="block px-4 py-3 rounded-xl text-sm font-bold {{ request()->routeIs('contact') ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-gray-800' }} transition">Contact</a>
         </div>
 
         <!-- Responsive Settings Options -->

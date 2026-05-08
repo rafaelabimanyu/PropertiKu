@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/featured', [FeaturedController::class, 'index'])->name('featured');
 Route::get('/guide', fn() => view('guide'))->name('guide');
+Route::get('/sitemap', fn() => view('sitemap'))->name('sitemap');
+Route::get('/contact', fn() => view('contact'))->name('contact');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

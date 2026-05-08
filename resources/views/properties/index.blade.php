@@ -82,13 +82,12 @@
                     <!-- Property Grid -->
                     <main class="flex-1">
                         @if($properties->isEmpty())
-                            <div class="py-20 text-center glass dark:glass-dark rounded-[3rem]">
-                                <div class="w-20 h-20 bg-slate-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold mb-2">No matching properties</h3>
-                                <p class="text-slate-500 dark:text-slate-400">Try adjusting your filters or search terms.</p>
-                            </div>
+                            <x-empty-state 
+                                title="No matching properties" 
+                                subtitle="We couldn't find any properties matching your current filters. Try resetting or adjusting your search."
+                                actionText="Reset All Filters"
+                                :actionUrl="route('properties.index')"
+                            />
                         @else
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 @foreach($properties as $property)
