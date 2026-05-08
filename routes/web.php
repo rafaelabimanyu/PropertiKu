@@ -23,6 +23,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/agent', [DashboardController::class, 'agent'])->name('dashboard.agent');
     Route::get('/dashboard/admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
 
+    // Role-specific Guides
+    Route::get('/dashboard/buyer/guide', [\App\Http\Controllers\GuideController::class, 'buyer'])->name('guide.buyer');
+    Route::get('/dashboard/agent/guide', [\App\Http\Controllers\GuideController::class, 'agent'])->name('guide.agent');
+    Route::get('/dashboard/admin/guide', [\App\Http\Controllers\GuideController::class, 'admin'])->name('guide.admin');
+
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

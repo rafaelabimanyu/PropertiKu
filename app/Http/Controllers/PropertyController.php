@@ -56,6 +56,7 @@ class PropertyController extends Controller
         }
         if ($request->filled('min_area')) {
             $query->where('area', '>=', $request->min_area);
+        }
         if ($request->filled('type')) {
             $query->where('type', $request->type);
         }
