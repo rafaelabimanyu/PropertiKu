@@ -151,7 +151,13 @@
 
                     <!-- Related -->
                     <div class="pt-20">
-                        <h3 class="text-2xl font-black mb-12 tracking-tight">Similar <span class="text-gradient">Properties</span></h3>
+                        <div class="flex items-center justify-between mb-12">
+                            <h3 class="text-2xl font-black tracking-tight">Similar <span class="text-gradient">Properties</span></h3>
+                            <span class="px-4 py-1.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full text-[9px] font-black uppercase tracking-widest shadow-lg flex items-center">
+                                <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                AI Recommended
+                            </span>
+                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                             @foreach($relatedProperties as $related)
                                 <x-property-card :property="$related" />

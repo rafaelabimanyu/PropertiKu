@@ -56,9 +56,29 @@ class PropertyController extends Controller
         }
         if ($request->filled('min_area')) {
             $query->where('area', '>=', $request->min_area);
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
         }
 
-        $properties = $query->latest()->paginate(12)->withQueryString();
+        // Sorting
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'cheapest':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'expensive':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'newest':
+                default:
+                    $query->latest();
+                    break;
+            }
+        } else {
+            $query->latest();
+        }
+
+        $properties = $query->paginate(12)->withQueryString();
         
         return view('properties.index', compact('properties'));
     }
@@ -93,10 +113,27 @@ class PropertyController extends Controller
     public function show(Property $property)
     {
         $this->authorize('view', $property);
-        $relatedProperties = Property::with('user')->where('id', '!=', $property->id)
-            ->where('city', $property->city)
+        // AI Recommendation Logic: Match type, city, and price range (± 20%)
+        $relatedProperties = Property::with('user')
+            ->where('id', '!=', $property->id)
+            ->where(function ($query) use ($property) {
+                $query->where('city', $property->city)
+                      ->orWhere('type', $property->type);
+            })
+            ->whereBetween('price', [$property->price * 0.8, $property->price * 1.2])
             ->take(3)
             ->get();
+
+        // Fallback if not enough similar properties
+        if ($relatedProperties->count() < 3) {
+            $moreProperties = Property::with('user')
+                ->where('id', '!=', $property->id)
+                ->whereNotIn('id', $relatedProperties->pluck('id'))
+                ->latest()
+                ->take(3 - $relatedProperties->count())
+                ->get();
+            $relatedProperties = $relatedProperties->merge($moreProperties);
+        }
 
         return view('properties.show', compact('property', 'relatedProperties'));
     }

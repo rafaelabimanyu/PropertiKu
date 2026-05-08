@@ -34,6 +34,17 @@
                                     </div>
                                 </div>
 
+                                <!-- Property Type -->
+                                <div>
+                                    <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Property Type</label>
+                                    <select name="type" class="w-full bg-slate-100 dark:bg-gray-800 border-none rounded-2xl text-xs p-3 focus:ring-1 focus:ring-indigo-500">
+                                        <option value="">All Types</option>
+                                        @foreach(['house' => 'House', 'villa' => 'Villa', 'apartment' => 'Apartment', 'townhouse' => 'Townhouse', 'land' => 'Land', 'office' => 'Office'] as $val => $label)
+                                            <option value="{{ $val }}" {{ request('type') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                                 <!-- Bedrooms -->
                                 <div>
                                     <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Min Bedrooms</label>
@@ -42,6 +53,16 @@
                                         @foreach([1,2,3,4,5] as $num)
                                             <option value="{{ $num }}" {{ request('bedrooms') == $num ? 'selected' : '' }}>{{ $num }}+ Beds</option>
                                         @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Sorting -->
+                                <div>
+                                    <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Sort By</label>
+                                    <select name="sort" class="w-full bg-slate-100 dark:bg-gray-800 border-none rounded-2xl text-xs p-3 focus:ring-1 focus:ring-indigo-500">
+                                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest Listed</option>
+                                        <option value="cheapest" {{ request('sort') == 'cheapest' ? 'selected' : '' }}>Lowest Price</option>
+                                        <option value="expensive" {{ request('sort') == 'expensive' ? 'selected' : '' }}>Highest Price</option>
                                     </select>
                                 </div>
 

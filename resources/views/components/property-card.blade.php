@@ -15,6 +15,9 @@
             <span class="px-4 py-1.5 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest {{ $property->status === 'sale' ? 'text-emerald-600' : 'text-blue-600' }}">
                 For {{ ucfirst($property->status) }}
             </span>
+            <span class="px-3 py-1 bg-slate-900/80 backdrop-blur text-white rounded-full text-[9px] font-bold uppercase tracking-widest self-start">
+                {{ ucfirst($property->type) }}
+            </span>
         </div>
 
         <!-- Price Overlay -->

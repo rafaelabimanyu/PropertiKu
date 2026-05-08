@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Property extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'user_id', 'title', 'slug', 'price', 'city', 'address',
-        'bedrooms', 'bathrooms', 'area', 'status', 'description',
+        'bedrooms', 'bathrooms', 'area', 'type', 'status', 'description',
         'image', 'latitude', 'longitude', 'facilities', 'images',
     ];
 

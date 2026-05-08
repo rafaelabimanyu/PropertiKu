@@ -37,33 +37,7 @@ class DatabaseSeeder extends Seeder
             'role' => User::ROLE_BUYER,
         ]);
 
-        // Sample Properties
-        Property::create([
-            'user_id' => $agent->id,
-            'title' => 'Modern Minimalist Villa in Bali',
-            'slug' => 'modern-minimalist-villa-in-bali',
-            'price' => 1250000.00,
-            'city' => 'Bali',
-            'address' => 'Jl. Sunset Road No. 123, Seminyak',
-            'bedrooms' => 4,
-            'bathrooms' => 3,
-            'area' => 250.50,
-            'status' => 'sale',
-            'description' => 'Beautiful villa with private pool and stunning sunset views.',
-        ]);
-
-        Property::create([
-            'user_id' => $agent->id,
-            'title' => 'Luxury Apartment in Jakarta CBD',
-            'slug' => 'luxury-apartment-in-jakarta-cbd',
-            'price' => 5500.00,
-            'city' => 'Jakarta',
-            'address' => 'Sudirman Central Business District',
-            'bedrooms' => 2,
-            'bathrooms' => 2,
-            'area' => 120.00,
-            'status' => 'rent',
-            'description' => 'High-end apartment with full city view and premium facilities.',
-        ]);
+        // Create exactly 60 random properties associated with any existing agent
+        \App\Models\Property::factory(60)->create();
     }
 }

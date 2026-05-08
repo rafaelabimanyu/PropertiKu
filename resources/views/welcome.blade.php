@@ -138,6 +138,64 @@
             </div>
         </section>
 
+        <!-- Top Cities -->
+        <section class="py-20 bg-slate-900 text-white rounded-[4rem] lg:rounded-[10rem] my-10">
+            <div class="max-w-7xl mx-auto px-6 sm:px-8 text-center">
+                <h2 class="text-4xl lg:text-5xl font-black mb-6 tracking-tight">Explore Top <span class="text-emerald-400">Locations</span></h2>
+                <p class="text-slate-400 font-medium mb-16">Find exclusive properties in Indonesia's most sought-after cities.</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    @foreach(['Jakarta' => 'bg-indigo-500', 'Bali' => 'bg-emerald-500', 'Bandung' => 'bg-blue-500', 'Surabaya' => 'bg-purple-500'] as $city => $color)
+                        <a href="{{ route('properties.index', ['city' => $city]) }}" class="group relative overflow-hidden rounded-[2rem] aspect-square flex items-center justify-center p-6 bg-slate-800 border border-slate-700 hover:border-slate-500 transition">
+                            <div class="absolute inset-0 {{ $color }}/10 group-hover:{{ $color }}/30 transition duration-500"></div>
+                            <div class="relative z-10 text-center">
+                                <h4 class="text-2xl font-black mb-2">{{ $city }}</h4>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-white transition">View Properties</span>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Stats Placeholder -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-6 sm:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-slate-200 dark:divide-gray-800 text-center">
+                    <div>
+                        <h4 class="text-4xl font-black text-indigo-600 mb-2">1,200+</h4>
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Active Listings</p>
+                    </div>
+                    <div>
+                        <h4 class="text-4xl font-black text-emerald-600 mb-2">$850M</h4>
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Transaction Volume</p>
+                    </div>
+                    <div>
+                        <h4 class="text-4xl font-black text-blue-600 mb-2">450+</h4>
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Certified Agents</p>
+                    </div>
+                    <div>
+                        <h4 class="text-4xl font-black text-purple-600 mb-2">15k</h4>
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Happy Families</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonial -->
+        <section class="py-20 bg-indigo-50 dark:bg-gray-900/50 rounded-[4rem] my-10">
+            <div class="max-w-4xl mx-auto px-6 text-center">
+                <svg class="w-12 h-12 text-indigo-300 dark:text-indigo-900 mx-auto mb-8" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                <p class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white leading-relaxed mb-8">"PropertiKu made finding our dream home incredibly easy. The AI recommendations were spot on, and the transaction was seamless from start to finish."</p>
+                <div>
+                    <div class="w-16 h-16 bg-slate-300 rounded-full mx-auto mb-4 border-4 border-white shadow-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" alt="Sarah J." class="w-full h-full object-cover">
+                    </div>
+                    <h5 class="font-black text-lg">Sarah Jenkins</h5>
+                    <p class="text-sm text-slate-500 uppercase tracking-widest font-bold">Luxury Home Buyer</p>
+                </div>
+            </div>
+        </section>
+
         <!-- CTA -->
         <section class="py-32">
             <div class="max-w-7xl mx-auto px-6 sm:px-8">

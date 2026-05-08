@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('bedrooms');
             $table->integer('bathrooms');
             $table->decimal('area', 10, 2);
+            $table->string('type')->default('house');
             $table->enum('status', ['sale', 'rent'])->default('sale');
             $table->text('description');
             $table->string('image')->nullable();
