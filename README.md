@@ -1,58 +1,178 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏰 PropertiKu — AI-Powered Luxury Property Marketplace
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel)](https://laravel.com)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com)
+[![Vite](https://img.shields.io/badge/Vite-Ready-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev)
+[![Status](https://img.shields.io/badge/Status-Production--Ready-success?style=for-the-badge)](https://github.com/rafaelabimanyu/PropertiKu)
 
-## About Laravel
+**PropertiKu** is a premium, high-end real estate marketplace built for the modern era. Designed with a focus on luxury aesthetics and intelligent user experience, it bridges the gap between buyers, agents, and administrators through a sophisticated AI-driven ecosystem.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 The Vision
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+PropertiKu isn't just another listing site. It is a comprehensive **Role-Based Marketplace** designed to handle the entire real estate lifecycle—from smart discovery and virtual negotiation to survey scheduling and trust verification.
 
-## Learning Laravel
+### ✨ Core Pillars
+- **Premium Aesthetics**: Glassmorphism UI with a focus on high-quality visuals.
+- **Trust-First Approach**: Integrated agent verification and transparent review systems.
+- **Intelligent Discovery**: AI-driven recommendation logic matching user preferences.
+- **Operational Excellence**: Dedicated workspaces for every user role.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 💎 Key Features
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+| Feature | Description |
+| :--- | :--- |
+| **Multi-Role System** | Dynamic RBAC for Guests, Buyers, Agents, and Admins. |
+| **AI Recommendations** | Smart property matching based on city, type, and price range. |
+| **Booking & Surveys** | Integrated scheduling system for property visits. |
+| **Internal Chat** | Direct messaging system between Buyers and Agents. |
+| **Leads Management** | Full sales pipeline (New, Contacted, Qualified, Closed). |
+| **Agent Verification** | Manual admin moderation for professional trust badges. |
+| **Monetization** | Featured listing system for prioritized search visibility. |
+| **Reviews & Ratings** | Multi-dimensional feedback for properties and agents. |
+| **Notifications** | Real-time alerts for bookings, messages, and status updates. |
+| **Responsive Design** | Perfect experience on Mobile, Tablet, and Desktop. |
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 👥 Role-Based Experience
 
+### 👤 Guest
+The entry point. Guests can browse properties, use advanced filters, and view detailed listings. To interact (chat, book, favorite), they are seamlessly guided to join the ecosystem.
+
+### 🛍️ Buyer Portal
+A luxury customer portal focused on discovery.
+- **Personalized Feed**: AI-curated property recommendations.
+- **Wishlist**: Save favorite estates for future reference.
+- **Booking Manager**: Track upcoming and past property surveys.
+- **Communication**: Centralized inbox for agent conversations.
+
+### 💼 Agent Workspace
+A powerful CRM and listing manager.
+- **Listing Engine**: Full CRUD for premium property portfolios.
+- **Leads Pipeline**: Automated lead capture from chats and bookings.
+- **Performance Analytics**: Visual data on market reach and conversion.
+- **Trust Center**: Manage professional verification profile.
+
+### 🛡️ Command Center (Admin)
+Full platform oversight and moderation.
+- **Moderation Queue**: Review agent verification requests.
+- **Market Data**: Overview of total users, properties, and bookings.
+- **User Management**: Direct control over platform membership.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend**: Laravel 11.x (PHP 8.2+)
+- **Frontend**: Blade Components, Tailwind CSS (Glassmorphism), Alpine.js
+- **Build Tool**: Vite
+- **Database**: MySQL / PostgreSQL / SQLite
+- **Maps**: Leaflet.js Integration
+- **Optimization**: Eager Loading, Query Caching, Route Optimization
+
+---
+
+## 📦 Installation Guide
+
+Follow these steps to set up the PropertiKu environment locally:
+
+### 1. Clone the Repository
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/rafaelabimanyu/PropertiKu.git
+cd PropertiKu
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install Dependencies
+```bash
+composer install
+npm install
+```
 
-## Contributing
+### 3. Environment Setup
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+*Configure your database settings in the `.env` file.*
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Database Migration & Seeding
+```bash
+php artisan migrate:fresh --seed
+```
+*This will create the structure and populate the platform with ~50-80 realistic premium properties.*
 
-## Code of Conduct
+### 5. Compile Assets & Run
+```bash
+npm run build
+php artisan serve
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🔑 Demo Accounts
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Use these credentials to explore the different roles:
 
-## License
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Admin** | `admin@propertiku.ai` | `password` |
+| **Agent** | `agent@propertiku.ai` | `password` |
+| **Buyer** | `buyer@propertiku.ai` | `password` |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 📂 Project Structure
+
+```text
+app/
+├── Http/Controllers/      # Core logic (AI, Booking, Leads)
+├── Models/                # Data structure (Property, Review, Lead)
+├── Policies/              # RBAC & Security rules
+resources/
+├── views/
+│   ├── components/        # Reusable premium UI components
+│   ├── dashboard/         # Role-specific dashboard layouts
+│   ├── properties/        # Marketplace & Listing views
+│   └── errors/            # Custom 404/500 error pages
+public/
+└── storage/               # Property image repository
+```
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] **AI Chatbot**: 24/7 automated property inquiry assistant.
+- [ ] **Payment Gateway**: Integrated booking fees and premium listing payments.
+- [ ] **Mortgage Calculator**: Advanced financial tools for buyers.
+- [ ] **Real-time Chat**: Upgrade to WebSockets (Pusher/Soketi).
+- [ ] **SaaS for Agencies**: Multi-agent organization support.
+
+---
+
+## 🎯 Why PropertiKu?
+
+This project was built to demonstrate that enterprise-level real estate platforms can be both **visually stunning** and **operationally robust**. It serves as a showcase for:
+1. Advanced Laravel architectural patterns.
+2. High-end UI/UX implementation using modern Tailwind CSS techniques.
+3. Complex role-based interaction flows in a marketplace environment.
+
+---
+
+## 📄 License
+
+The PropertiKu project is open-sourced software licensed under the [MIT license](LICENSE).
+
+---
+
+## 👨‍💻 Developer
+
+**Rafael Abimanyu**
+*Full-Stack AI Developer & UI Enthusiast*
+
+---
+*Built with excellence for the future of Real Estate.*
